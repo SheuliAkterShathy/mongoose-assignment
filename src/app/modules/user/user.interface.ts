@@ -8,8 +8,7 @@ export type TAddress = {
   city: string;
   country: string;
 };
-
-export type TOrder = {
+export type TOrders = {
   productName: string;
   price: number;
   quantity: number;
@@ -22,8 +21,8 @@ export type TUser = {
   fullName: TFullName;
   age: number;
   email: string;
-  isActive: 'active' | 'blocked';
+  isActive: boolean;
   hobbies: string[];
   address: TAddress;
-  orders: TOrder[];
+  orders?: TOrders[];
 };
