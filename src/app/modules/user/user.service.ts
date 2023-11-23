@@ -45,6 +45,25 @@ const deleteUser = async (id: number) => {
   return result;
 };
 
+const createOrder = async (id: number, product: TUser) => {
+  const user = await User.isUserExists(id);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  const result = await User.updateOne({
+    userId: id,
+    $addToSet: {
+      orders: product,
+    },
+  });
+
+  return result;
+  // const result = await User.findOne(
+  //   { userId: id },
+  //   { totalPrice: { $sum: '$orders.price' }, _id: 0 },
+  // );
+  // return result;
+};
 const getAllOrders = async (id: number) => {
   const result = await User.findOne({ userId: id }, { orders: 1, _id: 0 });
 
@@ -64,6 +83,7 @@ export const userServices = {
   getSingleUser,
   updateUser,
   deleteUser,
+  createOrder,
   getAllOrders,
   getTotalPrice,
 };

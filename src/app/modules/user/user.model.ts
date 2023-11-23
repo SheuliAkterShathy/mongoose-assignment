@@ -4,8 +4,16 @@ import bcrypt from 'bcrypt';
 import config from '../../config';
 
 const fullNameSchema = new Schema<TFullName>({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  firstName: {
+    type: String,
+    required: [true, 'First Name is required'],
+    trim: true,
+  },
+  lastName: {
+    type: String,
+    required: [true, 'Last Name is required'],
+    trim: true,
+  },
 });
 const addressSchema = new Schema<TAddress>({
   street: { type: String, required: true },
@@ -35,7 +43,10 @@ const userSchema = new Schema<TUser, IModel>({
   age: { type: Number, required: [true, 'age is required'] },
   email: { type: String, required: true, trim: true },
   isActive: { type: Boolean, default: true },
-  hobbies: [{ type: String, required: true }],
+  hobbies: {
+    type: [String],
+    default: [],
+  },
   address: { type: addressSchema, required: [true, 'Address is required'] },
   orders: { type: [orderSchema], default: [] },
 });

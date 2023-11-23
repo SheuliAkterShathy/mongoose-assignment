@@ -113,6 +113,30 @@ const updateUser = async (req: Request, res: Response) => {
     });
   }
 };
+const createOrder = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const product = req.body;
+    console.log(product);
+    const zodparsedData = userValidationSchema.parse(product);
+    const result = await userServices.createOrder(parseInt(id), zodparsedData);
+    console.log(result);
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'product is updated successfully',
+        data: result,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
@@ -214,6 +238,7 @@ export const userController = {
   getSingleUser,
   updateUser,
   deleteUser,
+  createOrder,
   getAllOrders,
   getTotalPrices,
 };
