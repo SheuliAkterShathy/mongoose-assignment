@@ -81,37 +81,39 @@ const getSingleUser = async (req: Request, res: Response) => {
     });
   }
 };
-// const updateUser = async (req: Request, res: Response) => {
-//   try {
-//     const id = req.params.userId;
-//     const userData = req.body;
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const userData = req.body;
+    // const zodparsedData = userValidationSchema.parse(userData);
+    const result = await userServices.updateUser(parseInt(id), userData);
 
-//     const result = await userServices.updateUser(parseInt(id), userData);
-//     if (result) {
-//       res.status(200).json({
-//         success: true,
-//         message: 'User is updated successfully',
-//         data: result,
-//       });
-//     } else {
-//       res.status(404).json({
-//         success: false,
-//         message: 'User not found',
-//         error: {
-//           code: 404,
-//           description: 'User not found!',
-//         },
-//       });
-//     }
-//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   } catch (err: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: err.message || 'something went wrong',
-//       error: err,
-//     });
-//   }
-// };
+    console.log(userData, id);
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'User is updated successfully',
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
@@ -149,6 +151,6 @@ export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
-  // updateUser,
+  updateUser,
   deleteUser,
 };

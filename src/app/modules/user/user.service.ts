@@ -20,20 +20,21 @@ const getSingleUser = async (id: number) => {
   return user;
 };
 
-// const updateUser = async (
-//   id: number,
-//   userData: TUser,
-// ): Promise<TUser | null> => {
-//   const result = await User.findByIdAndUpdate(id, userData, {
-//     new: true,
-//     runValidators: true,
-//   })
+const updateUser = async (
+  id: number,
+  userData: TUser,
+): Promise<TUser | null> => {
+  const result = await User.findOneAndUpdate({ userId: id }, userData, {
+    new: true,
+    runValidators: true,
+  });
 
-//   return result
-// }
+  return result;
+};
 
 // const updateUser = async (id: number, userData: TUser) => {
 //   const user = await User.isUserExists(id);
+//   const
 //   const userInfo = await User.updateOne({ userId: id }, userData);
 
 //   return { user, userInfo };
@@ -47,6 +48,6 @@ export const userServices = {
   createUser,
   getAllUsers,
   getSingleUser,
-  // updateUser,
+  updateUser,
   deleteUser,
 };
