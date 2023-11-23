@@ -88,7 +88,6 @@ const updateUser = async (req: Request, res: Response) => {
     // const zodparsedData = userValidationSchema.parse(userData);
     const result = await userServices.updateUser(parseInt(id), userData);
 
-    console.log(userData, id);
     if (result) {
       res.status(200).json({
         success: true,
@@ -147,10 +146,42 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+const getAllOrders = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await userServices.getAllOrders(parseInt(id));
+    if (result?.orders) {
+      res.status(200).json({
+        success: true,
+        message: 'orders are fetched successfully',
+        data: result?.orders,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+
 export const userController = {
   createUser,
   getAllUsers,
   getSingleUser,
   updateUser,
   deleteUser,
+  getAllOrders,
 };
