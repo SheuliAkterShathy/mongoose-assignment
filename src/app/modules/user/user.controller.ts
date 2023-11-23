@@ -150,11 +150,42 @@ const getAllOrders = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
     const result = await userServices.getAllOrders(parseInt(id));
-    if (result?.orders) {
+    if (result) {
       res.status(200).json({
         success: true,
         message: 'orders are fetched successfully',
-        data: result?.orders,
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+
+const getTotalPrices = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const result = await userServices.getTotalPrice(parseInt(id));
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Total price are fetched successfully',
+        data: result,
       });
     } else {
       res.status(404).json({
@@ -184,4 +215,5 @@ export const userController = {
   updateUser,
   deleteUser,
   getAllOrders,
+  getTotalPrices,
 };

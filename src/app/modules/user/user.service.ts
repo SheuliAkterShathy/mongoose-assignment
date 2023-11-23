@@ -46,8 +46,16 @@ const deleteUser = async (id: number) => {
 };
 
 const getAllOrders = async (id: number) => {
-  const result = await User.findOne({ userId: id });
+  const result = await User.findOne({ userId: id }, { orders: 1, _id: 0 });
 
+  return result;
+};
+
+const getTotalPrice = async (id: number): Promise<TUser | null> => {
+  const result = await User.findOne(
+    { userId: id },
+    { totalPrice: { $sum: '$orders.price' }, _id: 0 },
+  );
   return result;
 };
 export const userServices = {
@@ -57,4 +65,5 @@ export const userServices = {
   updateUser,
   deleteUser,
   getAllOrders,
+  getTotalPrice,
 };
