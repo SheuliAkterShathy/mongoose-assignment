@@ -17,14 +17,36 @@ const getAllUsers = async () => {
 const getSingleUser = async (id: number) => {
   const user = await User.isUserExists(id);
 
-  // const result = await User.findOne({ userId: id }, { password: 0 });
-
   return user;
+};
+
+// const updateUser = async (
+//   id: number,
+//   userData: TUser,
+// ): Promise<TUser | null> => {
+//   const result = await User.findByIdAndUpdate(id, userData, {
+//     new: true,
+//     runValidators: true,
+//   })
+
+//   return result
+// }
+
+// const updateUser = async (id: number, userData: TUser) => {
+//   const user = await User.isUserExists(id);
+//   const userInfo = await User.updateOne({ userId: id }, userData);
+
+//   return { user, userInfo };
+// };
+
+const deleteUser = async (id: number) => {
+  const result = await User.deleteOne({ userId: id });
+  return result;
 };
 export const userServices = {
   createUser,
   getAllUsers,
   getSingleUser,
   // updateUser,
-  // deleteUser,
+  deleteUser,
 };
