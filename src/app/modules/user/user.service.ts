@@ -4,12 +4,6 @@ import { User } from './user.model';
 const createUser = async (userData: TUser) => {
   const result = await User.create(userData); //////built in static method
 
-  // const student = new Student(studentData); //////create an instance
-  // if (await student.isUserExists(studentData.id)) {
-  //   throw new Error('User already exists.');
-  // }
-
-  // const result = await student.save(); //built in instance method
   return result;
 };
 
@@ -20,10 +14,17 @@ const getAllUsers = async () => {
   return result;
 };
 
+const getSingleUser = async (id: number) => {
+  const user = await User.isUserExists(id);
+
+  // const result = await User.findOne({ userId: id }, { password: 0 });
+
+  return user;
+};
 export const userServices = {
   createUser,
   getAllUsers,
-  // getSingleUser,
+  getSingleUser,
   // updateUser,
   // deleteUser,
 };

@@ -41,6 +41,38 @@ const getAllUsers = async (req: Request, res: Response) => {
       message: 'Students are fetched successfully',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+    });
+  }
+};
+
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+
+    const result = await userServices.getSingleUser(parseInt(id));
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'User is fetched successfully',
+        data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -53,4 +85,5 @@ const getAllUsers = async (req: Request, res: Response) => {
 export const userController = {
   createUser,
   getAllUsers,
+  getSingleUser,
 };
