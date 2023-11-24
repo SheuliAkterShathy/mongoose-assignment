@@ -41,7 +41,7 @@ const userSchema = new Schema<TUser, IModel>({
   password: { type: String, required: [true, 'password is required'] },
   fullName: { type: fullNameSchema, required: true, trim: true },
   age: { type: Number, required: [true, 'age is required'] },
-  email: { type: String, required: true, trim: true },
+  email: { type: String, required: [true, 'Email is required'], trim: true },
   isActive: { type: Boolean, default: true },
   hobbies: {
     type: [String],
@@ -52,9 +52,7 @@ const userSchema = new Schema<TUser, IModel>({
 });
 
 userSchema.pre('save', async function (next) {
-  // console.log(this, 'pre hook: we will save data');
-
-  // //// hashing password save into data
+  // hashing password save into data
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   user.password = await bcrypt.hash(
@@ -64,7 +62,6 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// ////post save middleware/ hook
 userSchema.post('save', function (doc, next) {
   doc.password = '';
 
