@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
-import userValidationSchema from './user.validation';
+import userValidationSchema, { orderValidationSchema } from './user.validation';
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -62,22 +62,16 @@ const getSingleUser = async (req: Request, res: Response) => {
         message: 'User is fetched successfully',
         data: result,
       });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
-      });
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: err.message || 'something went wrong',
-      error: err,
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
     });
   }
 };
@@ -94,46 +88,16 @@ const updateUser = async (req: Request, res: Response) => {
         message: 'User is updated successfully',
         data: result,
       });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
-      });
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: err.message || 'something went wrong',
-      error: err,
-    });
-  }
-};
-const createOrder = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.userId;
-    const product = req.body;
-
-    const zodparsedData = userValidationSchema.parse(product);
-    const result = await userServices.createOrder(parseInt(id), zodparsedData);
-
-    if (result) {
-      res.status(200).json({
-        success: true,
-        message: 'product is updated successfully',
-        data: result,
-      });
-    }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message || 'something went wrong',
-      error: err,
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
     });
   }
 };
@@ -143,29 +107,50 @@ const deleteUser = async (req: Request, res: Response) => {
     const id = req.params.userId;
 
     const result = await userServices.deleteUser(parseInt(id));
-
+    console.log(result);
     if (result.acknowledged === true) {
       res.status(200).json({
         success: true,
         message: 'User is deleted successfully',
-        data: result,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
+        data: null,
       });
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: err.message || 'something went wrong',
-      error: err,
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
+    });
+  }
+};
+const createOrder = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.userId;
+    const product = req.body;
+
+    const zodparsedData = orderValidationSchema.parse(product);
+    const result = await userServices.createOrder(parseInt(id), zodparsedData);
+
+    if (result) {
+      res.status(200).json({
+        success: true,
+        message: 'Order is created successfully',
+        data: null,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
     });
   }
 };
@@ -180,23 +165,17 @@ const getAllOrders = async (req: Request, res: Response) => {
         message: 'orders are fetched successfully',
         data: result,
       });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
-      });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: err.message || 'something went wrong',
-      error: err,
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
     });
   }
 };
@@ -211,23 +190,17 @@ const getTotalPrices = async (req: Request, res: Response) => {
         message: 'Total price are fetched successfully',
         data: result,
       });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'User not found',
-        error: {
-          code: 404,
-          description: 'User not found!',
-        },
-      });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    res.status(500).json({
+    res.status(404).json({
       success: false,
       message: err.message || 'something went wrong',
-      error: err,
+      error: {
+        code: 404,
+        description: 'user not found',
+      },
     });
   }
 };

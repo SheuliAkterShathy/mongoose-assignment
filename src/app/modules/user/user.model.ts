@@ -48,7 +48,7 @@ const userSchema = new Schema<TUser, IModel>({
     default: [],
   },
   address: { type: addressSchema, required: [true, 'Address is required'] },
-  orders: { type: [orderSchema], default: [] },
+  orders: { type: [orderSchema] },
 });
 
 userSchema.pre('save', async function (next) {
