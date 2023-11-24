@@ -64,12 +64,14 @@ const createOrder = async (id: number, product: TOrders) => {
   if (!user) {
     throw new Error('User not found');
   }
-  const result = await User.updateOne({
-    userId: id,
-    $addToSet: {
-      orders: product,
+  const result = await User.updateOne(
+    { userId: id },
+    {
+      $addToSet: {
+        orders: product,
+      },
     },
-  });
+  );
 
   return result;
 };
