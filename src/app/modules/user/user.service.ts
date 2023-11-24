@@ -9,7 +9,16 @@ const createUser = async (userData: TUser) => {
 
 const getAllUsers = async () => {
   const result = await User.aggregate([
-    { $project: { username: 1, fullName: 1, email: 1, age: 1, address: 1 } },
+    {
+      $project: {
+        username: 1,
+        fullName: 1,
+        email: 1,
+        age: 1,
+        address: 1,
+        _id: 0,
+      },
+    },
   ]);
   return result;
 };
@@ -20,25 +29,19 @@ const getSingleUser = async (id: number) => {
   return user;
 };
 
-const updateUser = async (
-  id: number,
-  userData: TUser,
-): Promise<TUser | null> => {
+const updateUser = async (id: number, userData: TUser) => {
   const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
-  });
+  }).select('-password');
+
+  const user = await User.isUserExists(id);
+  if (!user) {
+    throw new Error('User not found');
+  }
 
   return result;
 };
-
-// const updateUser = async (id: number, userData: TUser) => {
-//   const user = await User.isUserExists(id);
-//   const
-//   const userInfo = await User.updateOne({ userId: id }, userData);
-
-//   return { user, userInfo };
-// };
 
 const deleteUser = async (id: number) => {
   const result = await User.deleteOne({ userId: id });
@@ -58,11 +61,6 @@ const createOrder = async (id: number, product: TUser) => {
   });
 
   return result;
-  // const result = await User.findOne(
-  //   { userId: id },
-  //   { totalPrice: { $sum: '$orders.price' }, _id: 0 },
-  // );
-  // return result;
 };
 const getAllOrders = async (id: number) => {
   const result = await User.findOne({ userId: id }, { orders: 1, _id: 0 });

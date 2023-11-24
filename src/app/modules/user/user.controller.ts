@@ -38,7 +38,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     const result = await userServices.getAllUsers();
     res.status(200).json({
       success: true,
-      message: 'Students are fetched successfully',
+      message: 'Users are fetched successfully',
       data: result,
     });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,8 +85,8 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
     const userData = req.body;
-    // const zodparsedData = userValidationSchema.parse(userData);
-    const result = await userServices.updateUser(parseInt(id), userData);
+    const zodparsedData = userValidationSchema.parse(userData);
+    const result = await userServices.updateUser(parseInt(id), zodparsedData);
 
     if (result) {
       res.status(200).json({
@@ -117,10 +117,10 @@ const createOrder = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
     const product = req.body;
-    console.log(product);
+
     const zodparsedData = userValidationSchema.parse(product);
     const result = await userServices.createOrder(parseInt(id), zodparsedData);
-    console.log(result);
+
     if (result) {
       res.status(200).json({
         success: true,
