@@ -40,7 +40,7 @@ const updateUser = async (id: number, userData: TUser) => {
   const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
-  }).select('-password');
+  }).select('-password -orders');
 
   const user = await User.isUserExists(id);
   if (!user) {
