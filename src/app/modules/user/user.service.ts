@@ -4,7 +4,7 @@ import { User } from './user.model';
 const createUser = async (userData: TUser) => {
   const result = await User.create(userData);
   const result1 = await User.findOne({ userId: result.userId }).select(
-    '-orders -password _id -__v',
+    '-orders -password -_id -__v',
   );
   return result1;
 };
@@ -31,7 +31,7 @@ const getSingleUser = async (id: number) => {
     throw new Error('User not found');
   }
   const result = await User.findOne({ userId: id }).select(
-    '-orders -password _id -__v',
+    '-orders -password -_id -__v',
   );
   return result;
 };
@@ -40,7 +40,7 @@ const updateUser = async (id: number, userData: TUser) => {
   const result = await User.findOneAndUpdate({ userId: id }, userData, {
     new: true,
     runValidators: true,
-  }).select('-password -orders');
+  }).select('-password -orders -_id -__v');
 
   const user = await User.isUserExists(id);
   if (!user) {

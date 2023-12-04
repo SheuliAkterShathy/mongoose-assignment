@@ -11,6 +11,15 @@ This assignment is a Node.js Express application with TypeScript as the programm
 
 This project is with the types of userInterface and userModels.For storing data used mongodb with mongoose,zod for appropriate validation, bcrypt for hashing password.
 
+## Local Setup 
+Clone the repository git clone https://github.com/SheuliAkterShathy/mongoose-assignment
+
+* Navigate to the project directory cd your-folder
+
+* Install dependencies npm install
+
+
+
 ## Project running
 * For development mode: npm run start:dev
 * For production mode : npm run build
